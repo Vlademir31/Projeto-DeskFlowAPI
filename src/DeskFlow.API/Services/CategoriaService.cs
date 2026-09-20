@@ -1,13 +1,13 @@
 using DeskFlow.API.Models.Entities;
-using DeskFlow.API.Repository;
+using DeskFlow.API.Interfaces;
 
 namespace DeskFlow.API.Services;
 
-    public class CategoriaService
+    public class CategoriaService 
 {
-    private readonly CategoriaRepository _repository;
+    private readonly ICategoriaRepository _repository;
 
-    public CategoriaService(CategoriaRepository repository)
+    public CategoriaService(ICategoriaRepository repository)
     {
         _repository = repository;
     }
@@ -35,16 +35,16 @@ namespace DeskFlow.API.Services;
             throw new ArgumentException("O nome é obrigatório.");
         }
 
-        var categoriaExixtente = await _repository.ObterPorIdAsync(categoria.Id);
+        var categoriaExistente = await _repository.ObterPorIdAsync(categoria.Id);
 
-        if (categoriaExixtente is null)
+        if (categoriaExistente is null)
         {
             throw new KeyNotFoundException("Categoria não encontrada.");
         }
 
-        categoriaExixtente.Nome = categoria.Nome;
+        categoriaExistente.Nome = categoria.Nome;
 
-        await _repository.AtualizarAsync(categoriaExixtente);
+        await _repository.AtualizarAsync(categoriaExistente);
     }
      public async Task RemoverAsync (int id)
     {
