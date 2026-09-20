@@ -19,5 +19,10 @@ public class CategoriaRepository
         return await _context.Categorias.AsNoTracking().FirstOrDefaultAsync(Categoria =>
         Categoria.Id == id);
     }
+    public async Task AdicionarAsync (Categoria categoria)
+    {
+        await _context.Categorias.AddAsync(categoria);
+        await _context.SaveChangesAsync();
+    }
 
 }
