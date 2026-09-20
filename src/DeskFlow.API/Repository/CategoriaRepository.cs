@@ -29,5 +29,10 @@ public class CategoriaRepository
         _context.Categorias.Update(categoria);
         await _context.SaveChangesAsync();
     }
+    public async Task RemoverAsync (Categoria categoria)
+    {
+        _context.Categorias.Remove(categoria);
+        await _context.SaveChangesAsync();
+    }
 
 }
