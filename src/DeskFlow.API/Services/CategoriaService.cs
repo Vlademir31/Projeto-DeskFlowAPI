@@ -3,7 +3,7 @@ using DeskFlow.API.Interfaces;
 
 namespace DeskFlow.API.Services;
 
-    public class CategoriaService 
+    public class CategoriaService : ICategoriaService
 {
     private readonly ICategoriaRepository _repository;
 
