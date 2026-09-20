@@ -35,5 +35,13 @@ namespace DeskFlow.API.Controllers
 
             return Ok(categoria);
         }
+
+        [HttpPost]
+        public async Task<ActionResult<Categoria>> Adicionar (Categoria categoria)
+        {
+            await _service.AdicionarAsync(categoria);
+
+            return CreatedAtAction(nameof(ObterPorId), new {id = categoria.Id}, categoria);
+        }
     }
 }
