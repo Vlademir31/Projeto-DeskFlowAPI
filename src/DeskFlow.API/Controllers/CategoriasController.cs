@@ -22,5 +22,18 @@ namespace DeskFlow.API.Controllers
 
             return Ok(categorias);
         }
+
+        [HttpGet("{id:int}")]
+        public async Task<ActionResult<Categoria>> ObterPorId (int id)
+        {
+            var categoria = await _service.ObterPorIdAsync(id);
+
+            if (categoria is null)
+            {
+                return NotFound();
+            }
+
+            return Ok(categoria);
+        }
     }
 }
