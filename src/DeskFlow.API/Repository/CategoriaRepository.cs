@@ -24,5 +24,10 @@ public class CategoriaRepository
         await _context.Categorias.AddAsync(categoria);
         await _context.SaveChangesAsync();
     }
+    public async Task AtualizarAsync (Categoria categoria)
+    {
+        _context.Categorias.Update(categoria);
+        await _context.SaveChangesAsync();
+    }
 
 }
