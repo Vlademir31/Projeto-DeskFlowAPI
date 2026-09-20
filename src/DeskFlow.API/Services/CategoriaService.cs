@@ -1,3 +1,4 @@
+using DeskFlow.API.Models.Entities;
 using DeskFlow.API.Repository;
 
 namespace DeskFlow.API.Services;
@@ -9,6 +10,10 @@ namespace DeskFlow.API.Services;
     public CategoriaService(CategoriaRepository repository)
     {
         _repository = repository;
+    }
+    public async Task<List<Categoria>> ObterTodosAsync()
+    {
+        return await _repository.ObterTodosAsync();
     }
 
 }
