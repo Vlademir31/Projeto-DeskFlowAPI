@@ -46,5 +46,17 @@ namespace DeskFlow.API.Services;
 
         await _repository.AtualizarAsync(categoriaExixtente);
     }
+     public async Task RemoverAsync (int id)
+    {
+        var categoria = await _repository.ObterPorIdAsync(id);
+
+        if (categoria is null)
+        {
+            throw new KeyNotFoundException("Categoria não encontrada");
+        }
+
+        await _repository.RemoverAsync(categoria);
+    }
+
 
 }
