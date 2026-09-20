@@ -1,4 +1,5 @@
 
+using DeskFlow.API.Models.Entities;
 using DeskFlow.API.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,5 +14,13 @@ namespace DeskFlow.API.Controllers
         {
             _service = service;
         }  
+
+        [HttpGet]
+        public async Task<ActionResult<List<Categoria>>> ObterTodos()
+        {
+            var categorias = await _service.ObterTodosAsync();
+
+            return Ok(categorias);
+        }
     }
 }
