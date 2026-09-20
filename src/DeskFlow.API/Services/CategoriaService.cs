@@ -19,5 +19,14 @@ namespace DeskFlow.API.Services;
     {
         return await _repository.ObterPorIdAsync(id);
     }
+    public async Task AdicionarAsync (Categoria categoria)
+    {
+        if (string.IsNullOrWhiteSpace(categoria.Nome))
+        {
+            throw new ArgumentException("O nome é obrigatório.");
+        }
+
+        await _repository.AdicionarAsync(categoria);
+    }
 
 }
