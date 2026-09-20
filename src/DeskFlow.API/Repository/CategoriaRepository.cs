@@ -10,4 +10,10 @@ public class CategoriaRepository
     {
         _context = context;
     }
+    public async Task<List<Categoria>> ObterTodosAsync()
+    {
+        return await _context.Categorias
+        .AsNoTracking()
+        .ToListAsync();
+    }
 }
