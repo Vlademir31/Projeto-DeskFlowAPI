@@ -15,5 +15,9 @@ namespace DeskFlow.API.Services;
     {
         return await _repository.ObterTodosAsync();
     }
+    public async Task<Categoria?> ObterPorIdAsync(int id)
+    {
+        return await _repository.ObterPorIdAsync(id);
+    }
 
 }
