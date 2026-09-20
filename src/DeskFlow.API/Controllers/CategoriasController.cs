@@ -1,6 +1,6 @@
 
 using DeskFlow.API.Models.Entities;
-using DeskFlow.API.Services;
+using DeskFlow.API.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DeskFlow.API.Controllers
@@ -9,8 +9,8 @@ namespace DeskFlow.API.Controllers
     [Route("api/categorias")]
     public class CategoriasController : ControllerBase
     {
-      private readonly CategoriaService _service;
-      public CategoriasController (CategoriaService service)
+      private readonly ICategoriaService _service;
+      public CategoriasController (ICategoriaService service)
         {
             _service = service;
         }  
