@@ -43,5 +43,19 @@ namespace DeskFlow.API.Controllers
 
             return CreatedAtAction(nameof(ObterPorId), new {id = categoria.Id}, categoria);
         }
+
+        [HttpPut("{id:int}")]
+        public async Task<IActionResult> Atualizar( int id, Categoria categoria)
+        {
+            if (id != categoria.Id)
+            {
+                return BadRequest("O Id da rota é diferente do Id da categoria.");
+            }
+
+            await _service.AtualizarAsync(categoria);
+
+            return NoContent();
+        }
+
     }
 }
