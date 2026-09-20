@@ -28,5 +28,23 @@ namespace DeskFlow.API.Services;
 
         await _repository.AdicionarAsync(categoria);
     }
+    public async Task AtualizarAsync(Categoria categoria)
+    {
+        if (string.IsNullOrWhiteSpace(categoria.Nome))
+        {
+            throw new ArgumentException("O nome é obrigatório.");
+        }
+
+        var categoriaExixtente = await _repository.ObterPorIdAsync(categoria.Id);
+
+        if (categoriaExixtente is null)
+        {
+            throw new KeyNotFoundException("Categoria não encontrada.");
+        }
+
+        categoriaExixtente.Nome = categoria.Nome;
+
+        await _repository.AtualizarAsync(categoriaExixtente);
+    }
 
 }
