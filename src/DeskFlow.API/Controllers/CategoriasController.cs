@@ -57,5 +57,13 @@ namespace DeskFlow.API.Controllers
             return NoContent();
         }
 
+        [HttpDelete("{id:int}")]
+        public async Task<IActionResult> Remover(int id)
+        {
+            await _service.RemoverAsync(id);
+
+            return NoContent();
+        }
+
     }
 }
