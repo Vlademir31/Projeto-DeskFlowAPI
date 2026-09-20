@@ -12,8 +12,12 @@ public class CategoriaRepository
     }
     public async Task<List<Categoria>> ObterTodosAsync()
     {
-        return await _context.Categorias
-        .AsNoTracking()
-        .ToListAsync();
+        return await _context.Categorias.AsNoTracking().ToListAsync();
     }
+    public async Task<Categoria?> ObterPorIdAsync (int id)
+    {
+        return await _context.Categorias.AsNoTracking().FirstOrDefaultAsync(Categoria =>
+        Categoria.Id == id);
+    }
+
 }
