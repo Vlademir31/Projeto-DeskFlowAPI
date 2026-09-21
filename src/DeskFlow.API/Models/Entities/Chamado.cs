@@ -1,19 +1,30 @@
+using System.ComponentModel.DataAnnotations;
 using DeskFlow.API.Models.Enums;
 
 namespace DeskFlow.API.Models.Entities;
 
 public class Chamado
 {
-    public int id { get; set; }
+    public int Id { get; set; }
+
+    [Required]
+    [MaxLength(200)]
     public string Titulo { get; set; } = string.Empty;
+
+    [Required]
+    [MaxLength(2000)]
     public string Descricao { get; set; } = string.Empty;
     public Prioridade Prioridade { get; set; }
-    public StatusChamado status { get; set; }
+    public StatusChamado Status { get; set; }
+
+    [Required]
+    [MaxLength(150)]
     public string SolicitanteNome { get; set; } = string.Empty;
     public DateTime DataAbertura { get; set; }
-    public DateTime? DataFechamento { get; set; } // esse campo pode não possuir valor
+    public DateTime? DataFechamento { get; set; } 
+    [MaxLength(2000)]
     public string? Solucao {get; set; }
     public int CategoriaId { get; set; }
-    public Categoria Categoria { get; set; } = null!; // Categoria 1 - N Chamado
+    public Categoria Categoria { get; set; } = null!; 
 
 }
