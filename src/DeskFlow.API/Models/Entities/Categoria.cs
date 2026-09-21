@@ -8,4 +8,5 @@ public class Categoria
   [Required]
   [MaxLength(100)]
   public string Nome { get; set; } = string.Empty;  
+  public ICollection<Chamado> Chamados { get; set; } = []; // um categoria pode estar relacionada a zero, um ou vários chamados.
 }
