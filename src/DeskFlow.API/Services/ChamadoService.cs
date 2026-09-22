@@ -50,5 +50,23 @@ namespace DeskFlow.API.Services
 
             await _repository.AdicionarAsync(chamado);
         }
+        public async Task IniciarAsync(int id)
+        {
+            var chamado = await _repository.ObterPorIdAsync(id);
+
+            if (chamado is null)
+            {
+                throw new KeyNotFoundException("Chamado não encontrado.");
+            }
+
+            if (chamado.Status != StatusChamado.Aberto)
+            {
+                throw new InvalidOperationException("Somente chamados com status Aberto podem ser iniciados.");
+            }
+
+            chamado.Status = StatusChamado.EmAndamento;
+
+            await _repository.AtualizarAsync(chamado);
+        }
     }
 }
