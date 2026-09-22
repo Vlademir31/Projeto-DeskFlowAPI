@@ -20,6 +20,10 @@ builder.Services.AddScoped<IChamadoRepository, ChamadoRepository>();
 
 builder.Services.AddScoped<IChamadoService, ChamadoService>();
 
+builder.Services.AddScoped<IInteracaoRepository, InteracaoRepository>();
+
+builder.Services.AddScoped<IInteracaoService, InteracaoService>();
+
 builder.Services.AddControllers();
 
 var app = builder.Build();
