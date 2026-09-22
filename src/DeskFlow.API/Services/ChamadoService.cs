@@ -1,5 +1,4 @@
 
-
 using DeskFlow.API.Interfaces;
 using DeskFlow.API.Models.Entities;
 using DeskFlow.API.Models.Enums;
@@ -9,9 +8,11 @@ namespace DeskFlow.API.Services
     public class ChamadoService : IChamadoService
     {
         private readonly IChamadoRepository _repository;
-        public ChamadoService(IChamadoRepository repository)
+        private readonly ICategoriaRepository _categoriarepository;
+        public ChamadoService(IChamadoRepository repository, ICategoriaRepository categoriaRepository)
         {
             _repository = repository;
+            _categoriarepository = categoriaRepository;
         }
         public async Task AdicionarAsync(Chamado chamado)
         {
@@ -33,6 +34,13 @@ namespace DeskFlow.API.Services
             if (chamado.CategoriaId <= 0)
             {
                 throw new ArgumentException("Categoria obrigatório.");
+            }
+
+            var categoria = await _categoriarepository.ObterPorIdAsync(chamado.CategoriaId);
+
+            if (categoria is null)
+            {
+                throw new KeyNotFoundException ("Categoria não encontrada.");
             }
 
             chamado.Status = StatusChamado.Aberto;
