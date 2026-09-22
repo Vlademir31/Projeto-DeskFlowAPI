@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace DeskFlow.API.Controllers
 {
     [ApiController]
-    [Route("api/chamados/{chamadoId:int}/inetracoes")]
+    [Route("api/chamados/{chamadoId:int}/interacoes")]
     public class InteracoesController : ControllerBase
     {
         private readonly IInteracaoService _service;
