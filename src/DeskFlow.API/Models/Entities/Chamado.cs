@@ -26,5 +26,6 @@ public class Chamado
     public string? Solucao {get; set; }
     public int CategoriaId { get; set; }
     public Categoria? Categoria { get; set; } 
+    public ICollection<Interacao> Interacoes { get; set; } = [];
 
 }
