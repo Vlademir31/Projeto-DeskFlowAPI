@@ -5,7 +5,7 @@ namespace DeskFlow.API.Models.Entities
 {
     public class Interacao
     {
-        public int id { get; set; }
+        public int Id { get; set; }
         public int ChamadoId { get; set; }
 
         [Required]
