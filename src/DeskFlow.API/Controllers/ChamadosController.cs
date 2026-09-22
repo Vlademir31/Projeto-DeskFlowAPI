@@ -21,5 +21,13 @@ namespace DeskFlow.API.Controllers
 
             return StatusCode(StatusCodes.Status201Created, chamado);
         }
+
+        [HttpPatch("{id : int} / iniciar")]
+        public async Task<IActionResult> Iniciar (int id )
+        {
+            await _service.IniciarAsync(id);
+
+            return NoContent();
+        }
     }
 }
