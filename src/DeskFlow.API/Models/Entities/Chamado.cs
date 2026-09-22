@@ -25,6 +25,6 @@ public class Chamado
     [MaxLength(2000)]
     public string? Solucao {get; set; }
     public int CategoriaId { get; set; }
-    public Categoria Categoria { get; set; } = null!; 
+    public Categoria? Categoria { get; set; } 
 
 }
