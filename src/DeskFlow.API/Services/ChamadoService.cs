@@ -68,5 +68,30 @@ namespace DeskFlow.API.Services
 
             await _repository.AtualizarAsync(chamado);
         }
+        public async Task EncerrarAsync (int id, string solucao)
+        {
+            var chamado = await _repository.ObterPorIdAsync(id);
+
+            if (chamado is null)
+            {
+                throw new KeyNotFoundException("Chamado não encontrado.");
+            }
+
+            if (string.IsNullOrWhiteSpace(solucao))
+            {
+                throw new ArgumentException("Solução obrigatória.");
+            }
+
+            if (chamado.Status == StatusChamado.Fechado)
+            {
+                throw new InvalidOperationException("Chamado já está fechado.");
+            }
+
+            chamado.Status = StatusChamado.Fechado;
+            chamado.Solucao = solucao;
+            chamado.DataFechamento = DateTime.Now;
+
+            await _repository.AtualizarAsync(chamado);
+        }
     }
 }

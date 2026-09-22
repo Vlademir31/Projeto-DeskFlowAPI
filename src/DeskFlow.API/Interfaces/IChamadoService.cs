@@ -6,4 +6,5 @@ namespace DeskFlow.API.Interfaces;
  
     Task AdicionarAsync(Chamado chamado);
     Task IniciarAsync (int id);
+    Task EncerrarAsync(int id, string solucao);
 }
