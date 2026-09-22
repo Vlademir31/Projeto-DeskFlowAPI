@@ -16,6 +16,8 @@ namespace DeskFlow.API.Models.Entities
         [MaxLength(2000)]
         public string Mensagem { get; set; } = string.Empty;
         public DateTime DataRegistro { get; set; }
+
+        
         public Chamado? Chamado { get; set; }
     }
 }
