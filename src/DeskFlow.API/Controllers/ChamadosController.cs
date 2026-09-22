@@ -29,5 +29,13 @@ namespace DeskFlow.API.Controllers
 
             return NoContent();
         }
+
+        [HttpPatch("{id:int}/encerrar")]
+        public async Task<IActionResult> Encerrar (int id, [FromBody] string solucao)
+        {
+            await _service.EncerrarAsync(id, solucao);
+
+            return NoContent();
+        }
     }
 }
