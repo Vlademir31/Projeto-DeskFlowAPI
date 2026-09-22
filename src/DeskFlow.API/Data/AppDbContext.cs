@@ -12,11 +12,15 @@ namespace DeskFlow.API.Data
         }
         public DbSet<Categoria> Categorias => Set<Categoria>();
         public DbSet<Chamado> Chamados => Set<Chamado>();
+        public DbSet<Interacao> Interacoes => Set<Interacao>();
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Chamado>().HasOne (chamado => chamado.Categoria)
             .WithMany (categoria => categoria.Chamados) .HasForeignKey (chamado => chamado.CategoriaId)
             .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Interacao>().HasOne(Interacao => Interacao.Chamado)
+            .WithMany(chamado => chamado.Interacoes).HasForeignKey (Interacao => Interacao.ChamadoId);
         }
     }
 }
