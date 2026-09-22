@@ -1,6 +1,8 @@
 using DeskFlow.API.Interfaces;
 using DeskFlow.API.Models.Entities;
+using DeskFlow.API.Models.DTOs;
 using Microsoft.AspNetCore.Mvc;
+
 
 namespace DeskFlow.API.Controllers
 {
@@ -31,9 +33,9 @@ namespace DeskFlow.API.Controllers
         }
 
         [HttpPatch("{id:int}/encerrar")]
-        public async Task<IActionResult> Encerrar (int id, [FromBody] string solucao)
+        public async Task<IActionResult> Encerrar (int id, [FromBody] EncerrarChamadoRequest request)
         {
-            await _service.EncerrarAsync(id, solucao);
+            await _service.EncerrarAsync(id, request.Solucao);
 
             return NoContent();
         }
