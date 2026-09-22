@@ -1,5 +1,6 @@
 
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace DeskFlow.API.Models.Entities
 {
@@ -17,7 +18,7 @@ namespace DeskFlow.API.Models.Entities
         public string Mensagem { get; set; } = string.Empty;
         public DateTime DataRegistro { get; set; }
 
-        
+        [JsonIgnore]
         public Chamado? Chamado { get; set; }
     }
 }
