@@ -22,6 +22,12 @@ namespace DeskFlow.API.Repository
 
             await _context.SaveChangesAsync();
         }
+        public async Task AtualizarAsync (Chamado chamado)
+        {
+            _context.Chamados.Update(chamado);
+
+            await _context.SaveChangesAsync();
+        }
         
     }
 }
