@@ -14,6 +14,10 @@ namespace DeskFlow.API.Services
             _repository = repository;
             _categoriarepository = categoriaRepository;
         }
+        public async Task<Chamado?> ObterPorIdAsync(int id)
+        {
+            return await _repository.ObterPorIdAsync(id);
+        }
         public async Task AdicionarAsync(Chamado chamado)
         {
             if  (string.IsNullOrWhiteSpace(chamado.Titulo))
