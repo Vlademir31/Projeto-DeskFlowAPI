@@ -16,6 +16,19 @@ namespace DeskFlow.API.Controllers
             _service = service;
         }
 
+        [HttpGet("{id:int}")]
+        public async Task<ActionResult<Chamado>> ObterPorId(int id)
+        {
+            var chamado = await _service.ObterPorIdAsync(id);
+
+            if (chamado is null)
+            {
+                return NotFound();
+            }
+
+            return Ok(chamado);
+        }
+
         [HttpPost]
         public async Task<ActionResult<Chamado>> Adicionar(Chamado chamado)
         {
