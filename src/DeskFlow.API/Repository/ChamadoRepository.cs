@@ -14,7 +14,8 @@ namespace DeskFlow.API.Repository
         }
         public async Task<Chamado?> ObterPorIdAsync(int id)
         {
-            return await _context.Chamados.FirstOrDefaultAsync(Chamado => Chamado.Id == id);
+            return await _context.Chamados.Include(chamado => chamado.Categoria)
+            .Include(chamado => chamado.Interacoes).FirstOrDefaultAsync(Chamado => Chamado.Id == id);
         }
         public async Task AdicionarAsync (Chamado chamado)
         {
