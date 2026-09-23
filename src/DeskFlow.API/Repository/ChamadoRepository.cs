@@ -1,6 +1,7 @@
 using DeskFlow.API.Data;
 using DeskFlow.API.Interfaces;
 using DeskFlow.API.Models.Entities;
+using DeskFlow.API.Models.Enums;
 using Microsoft.EntityFrameworkCore;
 
 namespace DeskFlow.API.Repository
@@ -12,6 +13,29 @@ namespace DeskFlow.API.Repository
         {
             _context = context;
         }
+        public async Task<List<Chamado>> ObterTodosAsync(StatusChamado? status, Prioridade? prioridade,
+        int? categoriaId)
+        {
+            var consulta = _context.Chamados.Include(chamado => chamado.Categoria).AsQueryable();
+
+            if (status.HasValue)
+            {
+                consulta = consulta.Where(chamado => chamado.Status == status.Value);
+            }
+
+            if (prioridade.HasValue)
+            {
+                consulta = consulta.Where( chamado => chamado.Prioridade == prioridade.Value);
+            }
+
+            if (categoriaId.HasValue)
+            {
+                consulta = consulta.Where(chamado => chamado.CategoriaId == categoriaId.Value);
+            }
+
+            return await consulta.AsNoTracking().ToListAsync();
+        }
+
         public async Task<Chamado?> ObterPorIdAsync(int id)
         {
             return await _context.Chamados.Include(chamado => chamado.Categoria)
