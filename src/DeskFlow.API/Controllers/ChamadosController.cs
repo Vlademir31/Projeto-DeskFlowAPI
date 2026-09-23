@@ -2,6 +2,7 @@ using DeskFlow.API.Interfaces;
 using DeskFlow.API.Models.Entities;
 using DeskFlow.API.Models.DTOs;
 using Microsoft.AspNetCore.Mvc;
+using DeskFlow.API.Models.Enums;
 
 
 namespace DeskFlow.API.Controllers
@@ -14,6 +15,15 @@ namespace DeskFlow.API.Controllers
         public  ChamadosController(IChamadoService service)
         {
             _service = service;
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<List<Chamado>>> ObterTodos([FromQuery] StatusChamado? status,
+        [FromQuery]Prioridade? prioridade, [FromQuery] int? categoriaId)
+        {
+            var chamados = await _service.ObterTodosAsync(status, prioridade, categoriaId);
+
+            return Ok(chamados);
         }
 
         [HttpGet("{id:int}")]
