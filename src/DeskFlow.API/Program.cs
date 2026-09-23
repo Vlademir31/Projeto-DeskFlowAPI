@@ -1,5 +1,6 @@
 using DeskFlow.API.Data;
 using DeskFlow.API.Interfaces;
+using DeskFlow.API.Middlewares;
 using DeskFlow.API.Repository;
 using DeskFlow.API.Services;
 using Microsoft.EntityFrameworkCore;
@@ -35,6 +36,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 app.MapControllers();
 
