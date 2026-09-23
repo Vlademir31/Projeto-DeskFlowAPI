@@ -14,6 +14,10 @@ namespace DeskFlow.API.Services
             _repository = repository;
             _categoriarepository = categoriaRepository;
         }
+        public async Task<List<Chamado>> ObterTodosAsync(StatusChamado? status, Prioridade? prioridade, int? categoriaId)
+        {
+            return await _repository.ObterTodosAsync(status, prioridade, categoriaId);
+        }
         public async Task<Chamado?> ObterPorIdAsync(int id)
         {
             return await _repository.ObterPorIdAsync(id);
