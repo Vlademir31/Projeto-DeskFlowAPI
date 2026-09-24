@@ -44,7 +44,7 @@ namespace DeskFlow.API.Controllers
         {
             await _service.AdicionarAsync(chamado);
 
-            return StatusCode(StatusCodes.Status201Created, chamado);
+            return CreatedAtAction(nameof(ObterPorId), new { id = chamado.Id}, chamado);
         }
 
         [HttpPatch("{id:int}/iniciar")]
