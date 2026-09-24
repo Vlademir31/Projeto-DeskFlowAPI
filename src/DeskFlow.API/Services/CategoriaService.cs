@@ -55,6 +55,13 @@ namespace DeskFlow.API.Services;
             throw new KeyNotFoundException("Categoria não encontrada");
         }
 
+        var possuiChamados = await _repository.PossuiChamadosAsync(id);
+
+        if (possuiChamados)
+        {
+            throw new InvalidOperationException("Não é possível excluir uma categoria que possui chamados.");
+        }
+
         await _repository.RemoverAsync(categoria);
     }
 
