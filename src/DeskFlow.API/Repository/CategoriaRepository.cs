@@ -11,6 +11,10 @@ public class CategoriaRepository : ICategoriaRepository
     {
         _context = context;
     }
+    public async Task<bool> PossuiChamadosAsync (int categoriaId)
+    {
+        return await _context.Chamados.AnyAsync(chamado => chamado.CategoriaId == categoriaId);
+    }
     public async Task<List<Categoria>> ObterTodosAsync()
     {
         return await _context.Categorias.AsNoTracking().ToListAsync();
