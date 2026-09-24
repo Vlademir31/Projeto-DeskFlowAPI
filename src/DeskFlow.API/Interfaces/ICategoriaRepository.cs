@@ -14,5 +14,6 @@ namespace DeskFlow.API.Interfaces
         Task AtualizarAsync(Categoria categoria);
 
         Task RemoverAsync(Categoria categoria);
+        Task<bool> PossuiChamadosAsync(int categoriaId);
     }
 }
