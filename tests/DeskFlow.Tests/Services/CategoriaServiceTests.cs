@@ -44,7 +44,7 @@ public class CategoriaServiceTests
     }
 
     [Fact]
-    public async Task AtualizarAsync_DeveLancarExcecaoQuandoCategoriaNaoExixtir()
+    public async Task AtualizarAsync_DeveLancarExcecaoQuandoCategoriaNaoExistir()
     {
        var repositoryMock = new Mock<ICategoriaRepository>();
 
@@ -88,6 +88,24 @@ public class CategoriaServiceTests
      Assert.Equal("Não é possível excluir uma categoria que possui chamados.", excecao.Message);
 
      repositoryMock.Verify(repository => repository.RemoverAsync(It.IsAny<Categoria>()), Times.Never);
+    }
+
+    [Fact]
+    public async Task RemoverAsync_DeveLancarExcecaoQuandoCategoriaNaoExistir()
+    {
+      var repositoryMock = new Mock<ICategoriaRepository>();
+
+      repositoryMock.Setup(repositoy => repositoy.ObterPorIdAsync(9898)).ReturnsAsync((Categoria?)null);
+
+      var service = new CategoriaService(repositoryMock.Object);
+
+      var excecao = await Assert.ThrowsAnyAsync<KeyNotFoundException>(() => service.RemoverAsync(9898));
+
+      Assert.Equal("Categoria não encontrada", excecao.Message);
+
+      repositoryMock.Verify(repository => repository.PossuiChamadosAsync(It.IsAny<int>()), Times.Never);
+
+      repositoryMock.Verify(repository => repository.RemoverAsync(It.IsAny<Categoria>()), Times.Never);
     }
    
 }
