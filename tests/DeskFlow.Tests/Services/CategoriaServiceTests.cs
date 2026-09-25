@@ -42,5 +42,28 @@ public class CategoriaServiceTests
 
       repositoryMock.Verify( repository => repository.AdicionarAsync(It.IsAny<Categoria>()), Times.Never);
     }
+
+    [Fact]
+    public async Task AtualizarAsync_DeveLancarExcecaoQuandoCategoriaNaoExixtir()
+    {
+       var repositoryMock = new Mock<ICategoriaRepository>();
+
+       repositoryMock.Setup(repository => repository.ObterPorIdAsync(999)).ReturnsAsync((Categoria?)null);
+
+       var service = new CategoriaService(repositoryMock.Object);
+
+       var Categoria = new Categoria
+       {
+           Id = 999,
+           Nome = "Categoria inexistente"
+       };
+
+       var excecao = await Assert.ThrowsAnyAsync<KeyNotFoundException>(() => service.AtualizarAsync(Categoria));
+
+       Assert.Equal("Categoria não encontrada.", excecao.Message);
+
+       repositoryMock.Verify(repoistory => repoistory.AtualizarAsync(It.IsAny<Categoria>()),
+       Times.Never);
+    }
    
 }
