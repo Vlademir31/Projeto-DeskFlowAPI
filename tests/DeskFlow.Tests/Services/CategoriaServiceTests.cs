@@ -21,8 +21,26 @@ public class CategoriaServiceTests
        await service.AdicionarAsync(categoria);
 
        repositoryMock.Verify(repository => repository.AdicionarAsync(categoria), Times.Once);
-    
-        
+     
+    }
+
+    [Fact]
+    public async Task AdicionarAsync_DeveLancarExcecaoQuandoNomeForVazio()
+    {
+      var repositoryMock = new Mock<ICategoriaRepository>();
+
+      var service = new CategoriaService(repositoryMock.Object);
+
+      var categoria = new Categoria
+      {
+          Nome = String.Empty
+      };
+
+      var excecao = await Assert.ThrowsAsync<ArgumentException>(() => service.AdicionarAsync(categoria));
+
+      Assert.Equal("O nome é obrigatório.", excecao.Message);
+
+      repositoryMock.Verify( repository => repository.AdicionarAsync(It.IsAny<Categoria>()), Times.Never);
     }
    
 }
