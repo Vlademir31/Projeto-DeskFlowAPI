@@ -65,5 +65,29 @@ public class CategoriaServiceTests
        repositoryMock.Verify(repoistory => repoistory.AtualizarAsync(It.IsAny<Categoria>()),
        Times.Never);
     }
+
+    [Fact]
+    public async Task RemoverAsync_DeveLancarExcecaoQuandoCategoriaPossuirChamados()
+    {
+     var repositoryMock = new Mock<ICategoriaRepository>();
+
+     var categoria = new Categoria
+     {
+         Id = 4,
+         Nome = "Suporte de TI"
+     };
+
+     repositoryMock.Setup(repository => repository.ObterPorIdAsync(4)).ReturnsAsync(categoria);
+
+     repositoryMock.Setup(repository => repository.PossuiChamadosAsync(4)).ReturnsAsync(true);
+
+     var service = new CategoriaService(repositoryMock.Object);
+
+     var excecao = await Assert.ThrowsAnyAsync<InvalidOperationException>(() => service.RemoverAsync(4));
+
+     Assert.Equal("Não é possível excluir uma categoria que possui chamados.", excecao.Message);
+
+     repositoryMock.Verify(repository => repository.RemoverAsync(It.IsAny<Categoria>()), Times.Never);
+    }
    
 }
