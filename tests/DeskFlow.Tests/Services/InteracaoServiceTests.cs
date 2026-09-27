@@ -9,7 +9,7 @@ namespace DeskFlow.Tests.Services;
 public class InteracaoServiceTests
 {
     [Fact]
-    public async Task AdicionarAsync_DeveAdiocionarInteracaoParaChamadoAberto()
+    public async Task AdicionarAsync_DeveAdicionarInteracaoParaChamadoAberto()
     {
         var interacaoRepositoryMock = new Mock<IInteracaoRepository>();
 
