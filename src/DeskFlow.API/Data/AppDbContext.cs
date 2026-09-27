@@ -17,6 +17,7 @@ namespace DeskFlow.API.Data
         public DbSet<Interacao> Interacoes => Set<Interacao>();
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<Chamado>().HasOne (chamado => chamado.Categoria)
             .WithMany (categoria => categoria.Chamados) .HasForeignKey (chamado => chamado.CategoriaId)
             .OnDelete(DeleteBehavior.Restrict);
