@@ -1,10 +1,12 @@
 
 using DeskFlow.API.Models.Entities;
+using DeskFlow.API.Models.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace DeskFlow.API.Data
 {
-    public class AppDbContext : DbContext
+    public class AppDbContext : IdentityDbContext<ApplicationUser>
     {
         public AppDbContext (DbContextOptions<AppDbContext> options) : base (options)
         {
