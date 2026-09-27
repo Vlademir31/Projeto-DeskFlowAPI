@@ -3,6 +3,7 @@ using DeskFlow.API.Interfaces;
 using DeskFlow.API.Middlewares;
 using DeskFlow.API.Repository;
 using DeskFlow.API.Services;
+using DeskFlow.API.Models.Identity;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -24,6 +25,8 @@ builder.Services.AddScoped<IChamadoService, ChamadoService>();
 builder.Services.AddScoped<IInteracaoRepository, InteracaoRepository>();
 
 builder.Services.AddScoped<IInteracaoService, InteracaoService>();
+
+builder.Services.AddIdentityCore<ApplicationUser>().AddEntityFrameworkStores<AppDbContext>();
 
 builder.Services.AddControllers();
 
