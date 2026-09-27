@@ -7,6 +7,7 @@ using DeskFlow.API.Models.Identity;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.EntityFrameworkCore;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -32,6 +33,13 @@ builder.Services.AddIdentityCore<ApplicationUser>().AddEntityFrameworkStores<App
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
 {
+    var jwtKey = builder.Configuration["Jwt:Key"];
+
+    if (string.IsNullOrWhiteSpace(jwtKey))
+    {
+        throw new InvalidOperationException("A chave JWT não está configurada.");
+    }
+
     options.TokenValidationParameters = new TokenValidationParameters
     {
         ValidateIssuer = true,
@@ -39,9 +47,15 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
         ValidateLifetime = true,
         ValidateIssuerSigningKey = true,
         ValidIssuer = builder.Configuration["Jwt:Issuer"],
-        ValidAudience = builder.Configuration["Jwt:Audience"] 
+        ValidAudience = builder.Configuration["Jwt:Audience"], 
+
+       IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey))
     };
 });
+
+builder.Services.AddIdentityCore<ApplicationUser>().AddEntityFrameworkStores<AppDbContext>();
+
+builder.Services.AddScoped<IJwtService, JwtService>();
 
 builder.Services.AddControllers();
 
