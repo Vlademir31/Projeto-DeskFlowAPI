@@ -27,7 +27,7 @@ public class InteracaoService : IInteracaoService
 
         if (string.IsNullOrWhiteSpace(interacao.Mensagem))
         {
-            throw new ArgumentException("Mesagem obrigatória.");
+            throw new ArgumentException("Mensagem obrigatória.");
         }
 
         var chamado = await _chamadoRpository.ObterPorIdAsync(chamadoId);
