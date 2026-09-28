@@ -14,7 +14,7 @@ namespace DeskFlow.API.Services
             _userManager = userManager;
         }
 
-        public async Task<ApplicationUser> RegistrarAsync(RegisterRequest request)
+        public async Task<RegisterResponse> RegistrarAsync(RegisterRequest request)
         {
             var usuario = new ApplicationUser
             {
@@ -32,7 +32,12 @@ namespace DeskFlow.API.Services
 
             }
 
-            return usuario;
+            return new RegisterResponse
+            {
+                Id = usuario.Id,
+                UserName = usuario.UserName ?? string.Empty,
+                Email = usuario.Email ?? string.Empty
+            };
 
         }
 
