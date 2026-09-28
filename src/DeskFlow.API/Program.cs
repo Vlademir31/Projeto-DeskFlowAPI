@@ -33,7 +33,7 @@ builder.Services.AddScoped<IInteracaoService, InteracaoService>();
 builder.Services.AddIdentityCore<ApplicationUser>(options => 
 {options.Stores.SchemaVersion = IdentitySchemaVersions.Version3
 ;})
-.AddEntityFrameworkStores<AppDbContext>();
+.AddRoles<IdentityRole>().AddEntityFrameworkStores<AppDbContext>();
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
 {
@@ -56,6 +56,8 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey))
     };
 });
+
+builder.Services.AddAuthorization();
 
 builder.Services.AddScoped<IJwtService, JwtService>();
 
