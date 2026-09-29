@@ -106,6 +106,36 @@ namespace DeskFlow.Tests.Services
         }
 
         [Fact]
+        public async Task GenerateTokenAsync_DeveDefinirExpiracaoDoToken()
+        {
+            var usuario = new ApplicationUser
+            {
+                Id = "usuario-123",
+                UserName = "Teste",
+                Email = "teste@deskflow.com"
+            };
+
+            _configurationMock.Setup(configuration => configuration["Jwt:Key"]).Returns("ChaveSuperSecretaParaTestesDoDeskFlow123456789");
+            _configurationMock.Setup(configuration => configuration["Jwt:Issuer"]).Returns("DeskFlow.API");
+            _configurationMock.Setup(configuration => configuration["Jwt:Audience"]).Returns("DeskFlow.Client");
+            _configurationMock.Setup(configuration => configuration.GetSection("Jwt:ExpirationInMinutes")).Returns(MockSection("60"));
+            _userManagerMock.Setup(userManager => userManager.GetRolesAsync(usuario)).ReturnsAsync(new List<string>());
+            
+            var inicio = DateTime.UtcNow;
+
+           var token = await _service.GenerateTokenAsync(usuario);
+
+           var handler = new JwtSecurityTokenHandler();
+           var jwt = handler.ReadJwtToken(token);
+
+           var expiracaoEsperadaMinima = inicio.AddMinutes(59);
+           var expiracaoEsperadaMaxima = inicio.AddMinutes(61);
+
+           Assert.InRange(jwt.ValidTo, expiracaoEsperadaMinima, expiracaoEsperadaMaxima);
+        
+        }
+
+        [Fact]
         public async Task GenerateTokenAsync_DeveLancarExcecaoQuandoChaveNaoEstiverConfigurada()
         {
             var usuario = new ApplicationUser
