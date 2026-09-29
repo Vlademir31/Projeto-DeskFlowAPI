@@ -80,6 +80,31 @@ namespace DeskFlow.Tests.Services
            Assert.Equal("Administrador", roleClaim.Value);
         }
 
+           [Fact]
+        public async Task GenerateTokenAsync_DeveAdicionarIssuerEAudienceNoToken()
+        {
+            var usuario = new ApplicationUser
+            {
+                Id = "usuario-123",
+                UserName = "Teste",
+                Email = "teste@deskflow.com"
+            };
+
+            _configurationMock.Setup(configuration => configuration["Jwt:Key"]).Returns("ChaveSuperSecretaParaTestesDoDeskFlow123456789");
+            _configurationMock.Setup(configuration => configuration["Jwt:Issuer"]).Returns("DeskFlow.API");
+            _configurationMock.Setup(configuration => configuration["Jwt:Audience"]).Returns("DeskFlow.Client");
+            _configurationMock.Setup(configuration => configuration.GetSection("Jwt:ExpirationInMinutes")).Returns(MockSection("60"));
+            _userManagerMock.Setup(userManager => userManager.GetRolesAsync(usuario)).ReturnsAsync(new List<string>());
+        
+           var token = await _service.GenerateTokenAsync(usuario);
+
+           var handler = new JwtSecurityTokenHandler();
+           var jwt = handler.ReadJwtToken(token);
+
+           Assert.Equal("DeskFlow.API", jwt.Issuer);
+           Assert.Equal("DeskFlow.Client", jwt.Audiences.Single());
+        }
+
         [Fact]
         public async Task GenerateTokenAsync_DeveLancarExcecaoQuandoChaveNaoEstiverConfigurada()
         {
