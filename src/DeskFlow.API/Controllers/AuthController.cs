@@ -21,5 +21,13 @@ namespace DeskFlow.API.Controllers
 
             return StatusCode(StatusCodes.Status201Created, usuario);
         }
+
+        [HttpPost("login")]
+        public async Task<ActionResult<LoginResponse>> Login(LoginRequest request)
+        {
+            var resultado = await _authService.LoginAsync(request);
+
+            return Ok(resultado);
+        }
     }
 }
