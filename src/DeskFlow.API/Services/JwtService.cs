@@ -19,6 +19,13 @@ namespace DeskFlow.API.Services
         }  
         public async Task<string> GenerateTokenAsync(ApplicationUser user)
         {
+            var key = _configuration["Jwt:Key"];
+
+            if (string.IsNullOrWhiteSpace(key))
+            {
+                throw new InvalidOperationException("A chave JWT não está configurada.");
+            }
+            
             var claims = new List<Claim>
             {
                 new (JwtRegisteredClaimNames.Sub, user.Id),
@@ -30,19 +37,12 @@ namespace DeskFlow.API.Services
 
             foreach (var role in roles)
             {
-                claims.Add (new Claim(ClaimTypes.Role, role));
+                claims.Add(new Claim(ClaimTypes.Role, role));
             }
 
-            var key = _configuration["Jwt:Key"];
-
-            if (string.IsNullOrWhiteSpace(key))
-            {
-                throw new InvalidOperationException("A chave JWT não está configurada.");
-            }
-
-            var issuer = _configuration["Jet:Issuer"];
+            var issuer = _configuration["Jwt:Issuer"];
             var audience = _configuration["Jwt:Audience"];
-            var expirationInMinutes = _configuration.GetValue<int>("Jwt: ExpirationInMinutes");
+            var expirationInMinutes = _configuration.GetValue<int>("Jwt:ExpirationInMinutes");
 
             var signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key));
 
