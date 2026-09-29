@@ -3,12 +3,14 @@ using DeskFlow.API.Models.Entities;
 using DeskFlow.API.Models.DTOs;
 using Microsoft.AspNetCore.Mvc;
 using DeskFlow.API.Models.Enums;
+using Microsoft.AspNetCore.Authorization;
 
 
 namespace DeskFlow.API.Controllers
 {
     [ApiController]
     [Route("api/chamados")]
+    [Authorize]
     public class ChamadosController : ControllerBase 
     {
         private readonly IChamadoService _service;
