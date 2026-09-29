@@ -17,15 +17,16 @@ namespace DeskFlow.API.Middlewares
 
             catch (Exception exception)
             {
-              await TratarExecaoAsync( context, exception);  
+              await TratarExcecaoAsync( context, exception);  
             }
         }
-        private static async Task TratarExecaoAsync(HttpContext context, Exception exception)
+        private static async Task TratarExcecaoAsync(HttpContext context, Exception exception)
         {
             var statusCode = exception switch
             {
               ArgumentException => StatusCodes.Status400BadRequest, InvalidOperationException => StatusCodes.Status400BadRequest,
-              KeyNotFoundException => StatusCodes.Status404NotFound, _ => StatusCodes.Status500InternalServerError  
+              KeyNotFoundException => StatusCodes.Status404NotFound,UnauthorizedAccessException _ => StatusCodes.Status401Unauthorized,
+              _=> StatusCodes.Status500InternalServerError  
             };
 
             var resposta = new
