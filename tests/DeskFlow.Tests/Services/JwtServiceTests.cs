@@ -54,6 +54,32 @@ namespace DeskFlow.Tests.Services
             Assert.NotEmpty(jwt.Claims.First(c => c.Type == JwtRegisteredClaimNames.Jti).Value);
         } 
 
+          [Fact]
+        public async Task GenerateTokenAsync_DeveAdicionarRolesComoClaims()
+        {
+            var usuario = new ApplicationUser
+            {
+                Id = "usuario-123",
+                UserName = "Teste",
+                Email = "teste@deskflow.com"
+            };
+
+            _configurationMock.Setup(configuration => configuration["Jwt:Key"]).Returns("ChaveSuperSecretaParaTestesDoDeskFlow123456789");
+            _configurationMock.Setup(configuration => configuration["Jwt:Issuer"]).Returns("DeskFlow.API");
+            _configurationMock.Setup(configuration => configuration["Jwt:Audience"]).Returns("DeskFlow.Client");
+            _configurationMock.Setup(configuration => configuration.GetSection("Jwt:ExpirationInMinutes")).Returns(MockSection("60"));
+            _userManagerMock.Setup(userManager => userManager.GetRolesAsync(usuario)).ReturnsAsync(new List<string>{ "Administrador"});
+        
+           var token = await _service.GenerateTokenAsync(usuario);
+
+           var handler = new JwtSecurityTokenHandler();
+           var jwt = handler.ReadJwtToken(token);
+
+           var roleClaim = jwt.Claims.First(claim => claim.Type == ClaimTypes.Role);
+
+           Assert.Equal("Administrador", roleClaim.Value);
+        }
+
         [Fact]
         public async Task GenerateTokenAsync_DeveLancarExcecaoQuandoChaveNaoEstiverConfigurada()
         {
@@ -78,5 +104,9 @@ namespace DeskFlow.Tests.Services
 
             return sectionMock.Object;
         }
+
+      
+
+
     }
 }
