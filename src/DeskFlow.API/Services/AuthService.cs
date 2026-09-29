@@ -9,9 +9,11 @@ namespace DeskFlow.API.Services
     public class AuthService : IAuthService
     {
         private readonly UserManager<ApplicationUser> _userManager;
-        public AuthService(UserManager<ApplicationUser> userManager)
+        private readonly IJwtService _jwtService;
+        public AuthService(UserManager<ApplicationUser> userManager, IJwtService jwtService)
         {
             _userManager = userManager;
+            _jwtService = jwtService;
         }
 
         public async Task<RegisterResponse> RegistrarAsync(RegisterRequest request)
@@ -39,6 +41,29 @@ namespace DeskFlow.API.Services
                 Email = usuario.Email ?? string.Empty
             };
 
+        }
+        public async Task<LoginResponse> LoginAsync(LoginRequest request)
+        {
+            var usuario = await _userManager.FindByNameAsync(request.UserName);
+
+            if (usuario is null)
+            {
+                throw new UnauthorizedAccessException("Usuário ou senha inválidos.");
+            }
+
+            var senhaValida = await _userManager.CheckPasswordAsync(usuario, request.Password);
+
+            if (!senhaValida)
+            {
+                throw new UnauthorizedAccessException("Usuário ou senha inválidos.");
+            }
+
+            var token = await _jwtService.GenerateTokenAsync(usuario);
+
+            return new LoginResponse
+            {
+                Token = token
+            };
         }
 
 

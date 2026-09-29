@@ -1,9 +1,8 @@
-using System.Security.Permissions;
+using DeskFlow.API.Interfaces;
 using DeskFlow.API.Models.DTOs.Auth;
 using DeskFlow.API.Models.Identity;
 using DeskFlow.API.Services;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Identity.Client.NativeInterop;
 using Moq;
 
 namespace DeskFlow.Tests.Services
@@ -11,7 +10,9 @@ namespace DeskFlow.Tests.Services
     public class AuthServiceTests
     {
      private readonly Mock<UserManager<ApplicationUser>> _userManagerMock;
+     private readonly Mock<IJwtService> _jwtServiceMock;
      private readonly AuthService _service;
+     
      public AuthServiceTests()
         {
             var userStoreMock = new Mock<IUserStore<ApplicationUser>>();
@@ -19,7 +20,8 @@ namespace DeskFlow.Tests.Services
             _userManagerMock = new Mock<UserManager<ApplicationUser>>( userStoreMock.Object,
             null!, null!, null!, null!, null!, null!, null!, null!);
 
-            _service = new AuthService(_userManagerMock.Object);
+            _jwtServiceMock = new Mock<IJwtService>();
+            _service = new AuthService(_userManagerMock.Object, _jwtServiceMock.Object);
         } 
 
         [Fact]
@@ -64,6 +66,8 @@ namespace DeskFlow.Tests.Services
             request.Password)).ReturnsAsync(IdentityResult.Failed(erros));
 
             var excecao = await Assert.ThrowsAsync<InvalidOperationException>(() => _service.RegistrarAsync(request));
+
+            Assert.Contains("A senha é muito curta.", excecao.Message);
 
             _userManagerMock.Verify(userManager => userManager.CreateAsync(It.IsAny<ApplicationUser>(),
             request.Password), Times.Once);
