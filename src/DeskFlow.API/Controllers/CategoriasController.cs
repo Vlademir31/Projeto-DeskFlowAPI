@@ -2,6 +2,7 @@
 using DeskFlow.API.Models.Entities;
 using DeskFlow.API.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 namespace DeskFlow.API.Controllers
 {
@@ -35,7 +36,8 @@ namespace DeskFlow.API.Controllers
 
             return Ok(categoria);
         }
-
+        
+        [Authorize]
         [HttpPost]
         public async Task<ActionResult<Categoria>> Adicionar (Categoria categoria)
         {
@@ -44,6 +46,7 @@ namespace DeskFlow.API.Controllers
             return CreatedAtAction(nameof(ObterPorId), new {id = categoria.Id}, categoria);
         }
 
+        [Authorize]
         [HttpPut("{id:int}")]
         public async Task<IActionResult> Atualizar( int id, Categoria categoria)
         {
@@ -56,7 +59,8 @@ namespace DeskFlow.API.Controllers
 
             return NoContent();
         }
-
+         
+         [Authorize]
         [HttpDelete("{id:int}")]
         public async Task<IActionResult> Remover(int id)
         {
