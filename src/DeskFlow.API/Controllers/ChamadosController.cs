@@ -49,7 +49,7 @@ namespace DeskFlow.API.Controllers
             return CreatedAtAction(nameof(ObterPorId), new { id = chamado.Id}, chamado);
         }
 
-        [HttpPatch("{id:int}/iniciar")]
+        [HttpPost("{id:int}/iniciar")]
         public async Task<IActionResult> Iniciar (int id )
         {
             await _service.IniciarAsync(id);
@@ -57,7 +57,7 @@ namespace DeskFlow.API.Controllers
             return NoContent();
         }
 
-        [HttpPatch("{id:int}/encerrar")]
+        [HttpPost("{id:int}/encerrar")]
         public async Task<IActionResult> Encerrar (int id, [FromBody] EncerrarChamadoRequest request)
         {
             await _service.EncerrarAsync(id, request.Solucao);
