@@ -8,11 +8,11 @@ namespace DeskFlow.API.Services
     public class ChamadoService : IChamadoService
     {
         private readonly IChamadoRepository _repository;
-        private readonly ICategoriaRepository _categoriarepository;
+        private readonly ICategoriaRepository _categoriaRepository;
         public ChamadoService(IChamadoRepository repository, ICategoriaRepository categoriaRepository)
         {
             _repository = repository;
-            _categoriarepository = categoriaRepository;
+            _categoriaRepository = categoriaRepository;
         }
         public async Task<List<Chamado>> ObterTodosAsync(StatusChamado? status, Prioridade? prioridade, int? categoriaId)
         {
@@ -44,7 +44,7 @@ namespace DeskFlow.API.Services
                 throw new ArgumentException("Categoria obrigatório.");
             }
 
-            var categoria = await _categoriarepository.ObterPorIdAsync(chamado.CategoriaId);
+            var categoria = await _categoriaRepository.ObterPorIdAsync(chamado.CategoriaId);
 
             if (categoria is null)
             {
