@@ -7,11 +7,11 @@ namespace DeskFlow.API.Services;
 public class InteracaoService : IInteracaoService
 {
     private readonly IInteracaoRepository _repository;
-    private readonly IChamadoRepository _chamadoRpository;
+    private readonly IChamadoRepository _chamadoRepository;
     public InteracaoService (IInteracaoRepository repository, IChamadoRepository chamadoRepository)
     {
         _repository = repository;
-        _chamadoRpository = chamadoRepository;
+        _chamadoRepository = chamadoRepository;
     }
     public async Task AdicionarAsync (int chamadoId, Interacao interacao)
     {
@@ -30,7 +30,7 @@ public class InteracaoService : IInteracaoService
             throw new ArgumentException("Mensagem obrigatória.");
         }
 
-        var chamado = await _chamadoRpository.ObterPorIdAsync(chamadoId);
+        var chamado = await _chamadoRepository.ObterPorIdAsync(chamadoId);
 
         if ( chamado is null)
         {
